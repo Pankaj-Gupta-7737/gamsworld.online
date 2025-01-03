@@ -1,13 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gams World</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gams World - Quiz Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Welcome to Gams World</h1>
-  <p>This is the home of amazing content!</p>
-  <h1>pankaj</h1>
+    <header>
+        <h1>Welcome to Gams World Quiz Game!</h1>
+    </header>
+
+    <div class="quiz-container">
+        <h2>Test Your Knowledge!</h2>
+        <form id="quizForm">
+            <div class="question">
+                <p>1. What is the capital of France?</p>
+                <label>
+                    <input type="radio" name="q1" value="Paris"> Paris
+                </label><br>
+                <label>
+                    <input type="radio" name="q1" value="London"> London
+                </label><br>
+                <label>
+                    <input type="radio" name="q1" value="Berlin"> Berlin
+                </label>
+            </div>
+
+            <div class="question">
+                <p>2. Who developed the theory of relativity?</p>
+                <label>
+                    <input type="radio" name="q2" value="Isaac Newton"> Isaac Newton
+                </label><br>
+                <label>
+                    <input type="radio" name="q2" value="Albert Einstein"> Albert Einstein
+                </label><br>
+                <label>
+                    <input type="radio" name="q2" value="Nikola Tesla"> Nikola Tesla
+                </label>
+            </div>
+
+            <button type="button" onclick="checkAnswers()">Submit</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Gams World. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
