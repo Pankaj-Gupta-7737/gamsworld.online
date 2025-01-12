@@ -1,6 +1,3 @@
-robots.txt:
-makefile
-Copy code
 User-agent: *
 Allow: /
 Sitemap: https://www.gamsworld.online/sitemap.xml
