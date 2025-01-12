@@ -164,3 +164,7 @@ footer {
   bottom: 0;
   
 }
+:focus {
+  outline: 2px dashed #007BFF;
+  outline-offset: 4px;
+}

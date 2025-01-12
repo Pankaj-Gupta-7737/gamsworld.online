@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #continueEl {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            font-size: 30px;
+            color: white;
+        }
+        #scoreEl, #livesEl {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 20px;
+        }
+        #countdownEl {
+            font-size: 40px;
+            color: white;
+        }
+        .flash {
+            animation: flash 0.5s;
+        }
+        @keyframes flash {
+            0% { background-color: red; }
+            100% { background-color: transparent; }
+        }
+    </style>
+</head>
+<body>
+    <div id="scoreEl">Score: 0</div>
+    <div id="livesEl">Lives: 3</div>
+    <div id="continueEl">
+        Game Over! <br>Continue in <span id="countdownEl">10</span> seconds
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('scoreEl');
+        const livesEl = document.getElementById('livesEl');
+        const continueEl = document.getElementById('continueEl');
+        const countdownEl = document.getElementById('countdownEl');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Boss {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = canvas.width - this.width - 20;
+                this.y = Math.random() * (canvas.height - this.height);
+                this.speed = 4;
+                this.direction = 1;
+                this.lastShotTime = 0;
+                this.shootCooldown = 1000;
+                this.health = Math.max(5, Math.floor(score / 1000));
+                this.maxHealth = this.health;
+                this.color = '#f00';
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+                const healthBarWidth = this.width;
+                const healthBarHeight = 4;
+                const healthPercent = this.health / this.maxHealth;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(this.x, this.y - 10, healthBarWidth, healthBarHeight);
+                ctx.fillStyle = `hsl(${120 * healthPercent}, 100%, 50%)`;
+                ctx.fillRect(this.x, this.y - 10, healthBarWidth * healthPercent, healthBarHeight);
+            }
+            update() {
+                this.y += this.speed * this.direction;
+                if (this.y <= 0 || this.y + this.height >= canvas.height) {
+                    this.direction *= -1;
+                }
+                const currentTime = Date.now();
+                if (currentTime - this.lastShotTime >= this.shootCooldown) {
+                    bossBullets.push(new BossBullet(this.x, this.y + this.height / 2));
+                    this.lastShotTime = currentTime;
+                }
+            }
+        }
+
+        class BossBullet {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.width = 10;
+                this.height = 4;
+                this.speed = 7;
+                this.color = '#ff0';
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            update() {
+                this.x -= this.speed;
+            }
+        }
+
+        class Explosion {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 1;
+                this.maxRadius = 30;
+                this.color = '#f00';
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                this.radius += 2;
+                return this.radius < this.maxRadius;
+            }
+        }
+
+        class Player {
+            constructor() {
+                this.width = 30;
+                this.height = 20;
+                this.x = 50;
+                this.y = canvas.height / 2;
+                this.dx = 0;
+                this.dy = 0;
+                this.speed = 5;
+                this.powerCharge = 0;
+                this.isCharging = false;
+                this.lastShotTime = 0;
+                this.shootCooldown = 200;
+                this.lives = 3;
+                this.invulnerable = false;
+                this.invulnerableTime = 2000;
+            }
+            draw() {
+                if (this.invulnerable && Math.floor(Date.now() / 100) % 2) return;
+                ctx.fillStyle = '#0f0';
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x + this.width, this.y + this.height / 2);
+                ctx.lineTo(this.x, this.y + this.height);
+                ctx.closePath();
+                ctx.fill();
+            }
+            hit() {
+                if (this.invulnerable) return false;
+                this.lives--;
+                livesEl.textContent = this.lives;
+                this.invulnerable = true;
+                setTimeout(() => this.invulnerable = false, this.invulnerableTime);
+                return this.lives <= 0;
+            }
+            update() {
+                if (this.isCharging) {
+                    this.powerCharge = Math.min(this.powerCharge + 1, 60);
+                }
+                if (enemies.length > 0 || bosses.length > 0) {
+                    let target = null;
+                    if (bosses.length > 0) {
+                        target = bosses[0];
+                    } else {
+                        target = enemies.reduce((closest, enemy) => {
+                            const dist = Math.hypot(enemy.x - this.x, enemy.y - this.y);
+                            return dist < closest.dist ? {
+                                enemy,
+                                dist
+                            } : closest;
+                        }, {
+                            enemy: null,
+                            dist: Infinity
+                        }).enemy;
+                    }
+                    if (target) {
+                        this.y += Math.sign(target.y - this.y) * this.speed;
+                        if (!this.isCharging) {
+                            this.isCharging = true;
+                        }
+                        const currentTime = Date.now();
+                        if (currentTime - this.lastShotTime >= this.shootCooldown) {
+                            bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, this.powerCharge));
+                            this.powerCharge = 0;
+                            this.lastShotTime = currentTime;
+                            this.isCharging = false;
+                        }
+                    }
+                }
+                if (this.y < 0) this.y = 0;
+                if (this.y > canvas.height - this.height) this.y = canvas.height - this.height;
+            }
+        }
+
+        class Enemy {
+            constructor() {
+                this.width = 20;
+                this.height = 20;
+                this.x = canvas.width;
+                this.y = Math.random() * (canvas.height - this.height);
+                this.speed = 3 + Math.random() * 2;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            update() {
+                this.x -= this.speed;
+            }
+        }
+
+        class Bullet {
+            constructor(x, y, power = 0) {
+                this.x = x;
+                this.y = y;
+                this.width = 10 + power / 10;
+                this.height = 4 + power / 15;
+                this.speed = 10;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            update() {
+                this.x += this.speed;
+            }
+        }
+
+        const player = new Player();
+        const enemies = [];
+        const bullets = [];
+        const explosions = [];
+        const bosses = [];
+        const bossBullets = [];
+        let score = 0;
+        let frameCount = 0;
+        let gameOver = false;
+        let continueTimeout;
+        let countdownInterval;
+        let lastBossSpawn = 0;
+
+        function spawnEnemy() {
+            if (Math.random() < 0.02) {
+                enemies.push(new Enemy());
+            }
+        }
+
+        function checkBossSpawn() {
+            if (score >= lastBossSpawn + 5000) {
+                bosses.push(new Boss());
+                lastBossSpawn = score - score % 5000;
+            }
+        }
+
+        function checkCollisions() {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    const bullet = bullets[i];
+                    const enemy = enemies[j];
+                    if (bullet && enemy && bullet.x < enemy.x + enemy.width && bullet.x + bullet.width > enemy.x && bullet.y < enemy.y + enemy.height && bullet.y + bullet.height > enemy.y) {
+                        bullets.splice(i, 1);
+                        enemies.splice(j, 1);
+                        explosions.push(new Explosion(enemy.x, enemy.y));
+                        score += 100;
+                        scoreEl.textContent = score;
+                        checkBossSpawn();
+                    }
+                }
+            }
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                for (let j = bosses.length - 1; j >= 0; j--) {
+                    const bullet = bullets[i];
+                    const boss = bosses[j];
+                    if (bullet && boss && bullet.x < boss.x + boss.width && bullet.x + bullet.width > boss.x && bullet.y < boss.y + boss.height && bullet.y + bullet.height > boss.y) {
+                        bullets.splice(i, 1);
+                        boss.health--;
+                        if (boss.health <= 0) {
+                            bosses.splice(j, 1);
+                            explosions.push(new Explosion(boss.x, boss.y));
+                            score += 1000;
+                            scoreEl.textContent = score;
+                            enemies.forEach(enemy => {
+                                explosions.push(new Explosion(enemy.x, enemy.y));
+                            });
+                            enemies.length = 0;
+                        }
+                    }
+                }
+            }
+
+            for (let i = bossBullets.length - 1; i >= 0; i--) {
+                const bullet = bossBullets[i];
+                if (bullet.x < player.x + player.width && bullet.x + bullet.width > player.x && bullet.y < player.y + player.height && bullet.y + bullet.height > player.y) {
+                    bossBullets.splice(i, 1);
+                    explosions.push(new Explosion(bullet.x, bullet.y));
+                    if (player.hit() && !gameOver) {
+                        gameOver = true;
+                        document.body.classList.add('flash');
+                        setTimeout(() => document.body.classList.remove('flash'), 500);
+                        enemies.forEach(enemy => {
+                            explosions.push(new Explosion(enemy.x, enemy.y));
+                        });
+                        enemies.length = 0;
+                        bossBullets.length = 0;
+                        showContinueScreen();
+                    }
+                }
+            }
+
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const enemy = enemies[i];
+                if (enemy.x < player.x + player.width && enemy.x + enemy.width > player.x && enemy.y < player.y + player.height && enemy.y + enemy.height > player.y) {
+                    enemies.splice(i, 1);
+                    explosions.push(new Explosion(enemy.x, enemy.y));
+                    if (player.hit() && !gameOver) {
+                        gameOver = true;
+                        document.body.classList.add('flash');
+                        setTimeout(() => document.body.classList.remove('flash'), 500);
+                        enemies.forEach(enemy => {
+                            explosions.push(new Explosion(enemy.x, enemy.y));
+                        });
+                        enemies.length = 0;
+                        bossBullets.length = 0;
+                        showContinueScreen();
+                    }
+                }
+            }
+        }
+
+        function showContinueScreen() {
+            continueEl.style.display = 'block';
+            let countdown = 10;
+            countdownInterval = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = countdown;
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+            continueTimeout = setTimeout(continueGame, 5000);
+        }
+
+        function continueGame() {
+            clearTimeout(continueTimeout);
+            clearInterval(countdownInterval);
+            continueEl.style.display = 'none';
+            gameOver = false;
+            player.lives = 3;
+            livesEl.textContent = player.lives;
+            enemies.length = 0;
+            bullets.length = 0;
+            explosions.length = 0;
+            bosses.length = 0;
+            bossBullets.length = 0;
+            document.body.classList.remove('flash');
+        }
+
+        function gameLoop() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (!gameOver) {
+                frameCount++;
+                spawnEnemy();
+                checkBossSpawn();
+                player.update();
+                player.draw();
+                bullets.forEach((bullet, index) => {
+                    bullet.update();
+                    bullet.draw();
+                    if (bullet.x > canvas.width) bullets.splice(index, 1);
+                });
+                bossBullets.forEach((bullet, index) => {
+                    bullet.update();
+                    bullet.draw();
+                    if (bullet.x < 0) bossBullets.splice(index, 1);
+                });
+                enemies.forEach((enemy, index) => {
+                    enemy.update();
+                    enemy.draw();
+                    if (enemy.x + enemy.width < 0) enemies.splice(index, 1);
+                });
+                bosses.forEach(boss => {
+                    boss.update();
+                    boss.draw();
+                });
+                explosions.forEach((explosion, index) => {
+                    explosion.update();
+                    explosion.draw();
+                    if (!explosion.update()) explosions.splice(index, 1);
+                });
+                checkCollisions();
+            } else {
+                checkCollisions();
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') player.dy = -player.speed;
+            if (e.key === 'ArrowDown') player.dy = player.speed;
+        });
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') player.dy = 0;
+        });
+
+        gameLoop();
+    </script>
+</body>
+</html>
