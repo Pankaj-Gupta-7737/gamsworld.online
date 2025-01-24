@@ -1,3 +1,1 @@
-google.com, pub-2009516390222108, DIRECT
-rubiconproject.com, 12345, RESELLER
-openx.com, 67890, DIRECT
+google.com, pub-2009516390222108, DIRECT, f08c47fec0942fa0
