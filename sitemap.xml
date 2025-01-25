@@ -131,4 +131,45 @@
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
+     <!-- Jobs Page -->
+    <url>
+        <loc>https://www.gamsworld.online/job/index.html</loc>
+        <lastmod>2025-01-25</lastmod>
+        <priority>0.80</priority>
+    </url>
+
+    <!-- Sports Page -->
+    <url>
+        <loc>https://www.gamsworld.online/sport/index.html</loc>
+        <lastmod>2025-01-25</lastmod>
+        <priority>0.80</priority>
+    </url>
+
+    <!-- Tech Page -->
+    <url>
+        <loc>https://www.gamsworld.online/tech/index.html</loc>
+        <lastmod>2025-01-25</lastmod>
+        <priority>0.80</priority>
+    </url>
+
+    <!-- News Page -->
+    <url>
+        <loc>https://www.gamsworld.online/news/index.html</loc>
+        <lastmod>2025-01-25</lastmod>
+        <priority>0.80</priority>
+    </url>
+
+    <!-- Privacy Policy Page -->
+    <url>
+        <loc>https://www.gamsworld.online/privacy-policy.html</loc>
+        <lastmod>2025-01-25</lastmod>
+        <priority>0.50</priority>
+    </url>
+
+    <!-- Contact Us Page -->
+    <url>
+        <loc>https://www.gamsworld.online/contact.html</loc>
+        <lastmod>2025-01-25</lastmod>
+        <priority>0.50</priority>
+    </url>
 </urlset>
