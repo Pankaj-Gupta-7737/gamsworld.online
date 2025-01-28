@@ -199,58 +199,16 @@
         <h2>Breaking News</h2>
         <input type="text" id="search" placeholder="Search news..." onkeyup="filterNews()">
 
-        <!-- Ad Banner - Above the News List -->
+        <!-- Ad Banner -->
         <div style="margin: 20px auto; text-align: center;">
-            <ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-ad-client="ca-pub-2009516390222108" data-ad-slot="3189763983"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2009516390222108" data-ad-slot="3189763983" data-ad-format="auto"></ins>
         </div>
-
-        <ul id="newsList">
-            <li><a href="Serbias-Prime-Minister-Resigns-Amid-Anti-Corruption-Protests.html">Serbia’s Prime Minister Resigns Amid Anti-Corruption Protests</a></li>
-            <li><a href="jo-neljäs-hyvinvointialueen-johtaja-uutiset-suomi-globaalit-vaikutukset-hyvinvointialueet-johtajuus.html">Jo Neljäs Hyvinvointialueen Johtaja: Uudet Kehitykset ja Globaalit Näkökulmat</a></li>
-            <li><a href="Groenland.html">Groenland - The World's Largest Island</a></li>
-            <li><a href="年宵的起源与历史.html">🌍 年宵的起源与历史</a></li>
-
-            <!-- Ad Banner - Between News Entries -->
-            <div style="margin: 20px auto; text-align: center;">
-                <ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-ad-client="ca-pub-2009516390222108" data-ad-slot="3189763983"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-
-            <li><a href="news2.html">🏛️ Political Changes and Their Impact Worldwide</a></li>
-  <!-- Ad Banner - Below Job List -->
-  <div style="margin: 20px auto; text-align: center;">
-    <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-2009516390222108" data-ad-slot="6398977727"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</div>
-            <li><a href="news3.html">🎮 Tech Innovations That Are Changing the World</a></li>
-        </ul>
-    </main>
-
-    <script>
-        function filterNews() {
-            let input = document.getElementById("search").value.toLowerCase();
-            let news = document.querySelectorAll("#newsList li");
-            news.forEach(article => {
-                if (article.textContent.toLowerCase().includes(input)) {
-                    article.style.display = "block";
-                } else {
-                    article.style.display = "none";
-                }
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                (adsbygoogle = window.adsbygoogle || []).push({});
             });
-        }
-    </script>
-
-    <footer>
-        <p>© 2025 Gams World. All rights reserved.</p>
-        <p><a href="/privacy-policy.html">Privacy Policy</a> | <a href="/contact.html">Contact Us</a></p>
-    </footer>
+        </script>
+    </main>
 </body>
 
 </html>
