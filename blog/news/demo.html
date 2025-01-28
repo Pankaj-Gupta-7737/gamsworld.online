@@ -45,15 +45,110 @@
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2009516390222108" crossorigin="anonymous"></script>
 
+    <!-- CSS for Responsive Design -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a;
+            color: bisque;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-bottom: 2px solid #444;
+        }
+        nav {
+            text-align: center;
+            margin: 20px 0;
+            background-color: #1a1a1a;
+            padding: 10px;
+        }
+        nav a {
+            margin: 0 15px;
+            color: bisque;
+            text-decoration: none;
+            display: inline-block;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .menu-icon {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            background-color: #1a1a1a;
+            color: bisque;
+        }
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+        }
+        .news-item h3 {
+            margin-top: 0;
+        }
+        .news-item p {
+            margin-bottom: 0;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-top: 2px solid #444;
+            margin-top: 20px;
+        }
+        .ad-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+            .menu-icon {
+                display: block;
+            }
+            nav {
+                display: none;
+            }
+            nav.active {
+                display: block;
+            }
+        }
+    </style>
 </head>
 
-<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #0a0a0a;color: bisque; width: 100vw;padding: 10px;">
+<body>
     <header>
         <h1>Latest News</h1>
         <p>Your go-to source for breaking news, trending stories, and world events.</p>
     </header>
 
-    <nav>
+    <!-- Hamburger Menu for Mobile -->
+    <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+
+    <nav id="navMenu">
         <a href="/blog/news/index.html">News</a>
         <a href="/blog/movie/index.html">Movies</a>
         <a href="/blog/sport/index.html">Sports</a>
@@ -66,30 +161,78 @@
         <input type="text" id="search" placeholder="Search news..." onkeyup="filterNews()">
 
         <!-- Ad Banner -->
-        <div>
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2009516390222108" data-ad-slot="3189763983" data-ad-format="auto"></ins>
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-2009516390222108"
+                 data-ad-slot="3189763983"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 (adsbygoogle = window.adsbygoogle || []).push({});
             });
         </script>
-        <h1>hello world</h1>
-        <div>
-            <ins class="adsbygoogle"
-     style="display:block"
-     data-ad-format="fluid"
-     data-ad-layout-key="-fb+5w+4e-db+86"
-     data-ad-client="ca-pub-2009516390222108"
-     data-ad-slot="2629200943"></ins>
-<script>
-    window.onload = function () {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-};
 
-</script>
+        <!-- News Articles -->
+        <div class="news-item">
+            <h3>Global Markets React to New Economic Policies</h3>
+            <p>Global markets experienced significant volatility as new economic policies were announced by major economies. Investors are closely watching the developments.</p>
         </div>
+
+        <div class="news-item">
+            <h3>Tech Giants Unveil New Innovations at Annual Conference</h3>
+            <p>Leading tech companies showcased their latest innovations at the annual tech conference, highlighting advancements in AI, robotics, and renewable energy.</p>
+        </div>
+
+        <div class="news-item">
+            <h3>Sports: Record-Breaking Performance at the Olympics</h3>
+            <p>Athletes from around the world delivered record-breaking performances at the Olympics, with several new world records set in various disciplines.</p>
+        </div>
+
+        <!-- Ad Banner -->
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-format="fluid"
+                 data-ad-layout-key="-fb+5w+4e-db+86"
+                 data-ad-client="ca-pub-2009516390222108"
+                 data-ad-slot="2629200943"
+                 data-full-width-responsive="true"></ins>
+        </div>
+        <script>
+            window.onload = function () {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            };
+        </script>
     </main>
+
+    <footer>
+        <p>&copy; 2023 Gams World. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for filtering news and responsive menu -->
+    <script>
+        function filterNews() {
+            const input = document.getElementById('search').value.toUpperCase();
+            const newsItems = document.querySelectorAll('.news-item');
+
+            newsItems.forEach(item => {
+                const text = item.textContent || item.innerText;
+                if (text.toUpperCase().indexOf(input) > -1) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>
