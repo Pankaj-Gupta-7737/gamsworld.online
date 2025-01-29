@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Search Console API Integration</title>
+</head>
+<body>
+  <h1>Google Search Console Indexing</h1>
+  <input type="text" id="url" placeholder="Enter URL to index">
+  <button onclick="indexPage()">Request Index</button>
+
+  <script>
+    const apiKey = 'AIzaSyBQsicrEBqUEGaxhBpBPxUqdw5y2ZAWF70'; // Replace with your API key
+    const siteUrl = 'https://www.gamsworld.online'; // Replace with your site URL
+
+    function indexPage() {
+      const pageUrl = document.getElementById('url').value.trim();
+      if (!pageUrl) {
+        alert('Please enter a valid URL.');
+        return;
+      }
+
+      fetch(`https://indexing.googleapis.com/v3/urlNotifications:publish?key=${apiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: pageUrl,
+          type: 'URL_UPDATED' // Use 'URL_DELETED' to remove from index
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Index request response:', data);
+        alert('Indexing request sent successfully.');
+      })
+      .catch(error => {
+        console.error('Error sending request:', error);
+        alert('Failed to send indexing request.');
+      });
+    }
+  </script>
+</body>
+</html>
