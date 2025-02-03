@@ -131,8 +131,9 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .ad-container {
-            margin: 20px auto;
-            text-align: center;
+            width: 100%;
+    min-height: 100px; /* Ad ke height ko adjust karne ke liye */
+    text-align: center;
         }
         .responsive-ad {
             width: 320px;
@@ -167,7 +168,7 @@
     <div class="container">
         <!-- In-Feed Ad -->
         <div class="ad-container">
-            <ins class="adsbygoogle "
+            <ins class="adsbygoogle responsive-ad"
                 style="display:inline-block;"
                 data-ad-format="fluid"
                 data-ad-layout-key="-gm-3+16-3z+5c"
@@ -180,8 +181,8 @@
 
         <!-- In-Article Ad -->
         <div class="ad-container">
-            <ins class="adsbygoogle"
-                style="display:inline-block;; text-align:center;"
+            <ins class="adsbygoogle responsive-ad"
+                style="display:inline-block; text-align:center;"
                 data-ad-layout="in-article"
                 data-ad-format="fluid"
                 data-ad-client="ca-pub-2009516390222108"
