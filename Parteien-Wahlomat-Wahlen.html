@@ -120,14 +120,14 @@
             genau ist der Wahl-O-Mat, wie funktioniert er und welche Alternativen gibt es? In diesem Artikel erfährst du
             alles Wichtige zum Thema.</p>
         <p></p>
-        <div class="separator" style="clear: both; text-align: center;"><a
+        <!-- <div class="separator" style="clear: both; text-align: center;"><a
                 href="https://blogger.googleusercontent.com/img/a/AVvXsEh9BRpQIvEfz-aVPWxoyEfWA3-Bw9TGZ63cgdJwGi5f4huU2--baehwkCv6X7LhmCJBX7Nvti3JJa7P2pUg3T1MG75FICZ1oxGpBupuuKnoWy25yoyfuWBfOWwT1IigmLswlbiQUgZJJWNPpJ9DAGYdR3eKsMsIyJPnlR711ufsAtX3VWBiI4ewZsbor5MZ"
                 style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="417"
                     data-original-width="688" height="194"
                     src="https://blogger.googleusercontent.com/img/a/AVvXsEh9BRpQIvEfz-aVPWxoyEfWA3-Bw9TGZ63cgdJwGi5f4huU2--baehwkCv6X7LhmCJBX7Nvti3JJa7P2pUg3T1MG75FICZ1oxGpBupuuKnoWy25yoyfuWBfOWwT1IigmLswlbiQUgZJJWNPpJ9DAGYdR3eKsMsIyJPnlR711ufsAtX3VWBiI4ewZsbor5MZ"
                     width="320" /></a></div><br /><br />
         <p></p>
-        <hr />
+        <hr /> -->
         <h3><strong>Was ist der Wahl-O-Mat?</strong></h3>
         <p>Der <strong>Wahl-O-Mat</strong> ist ein Online-Tool der Bundeszentrale für politische Bildung (bpb), das seit
             2002 zu verschiedenen Wahlen in Deutschland angeboten wird. Ziel ist es, den Menschen eine Orientierung zu
@@ -206,20 +206,11 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let adElements = document.querySelectorAll(".adsbygoogle");
-
-            let observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            adElements.forEach(ad => observer.observe(ad));
-        });
+        window.onload = function () {
+            document.querySelectorAll('.adsbygoogle').forEach(function (ad) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            });
+        };
     </script>
 
 </body>
