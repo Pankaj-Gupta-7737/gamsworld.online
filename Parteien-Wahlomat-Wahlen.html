@@ -153,9 +153,21 @@ footer {
     </footer>
 
     <script>
-        window.onload = function () {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        };
+        document.addEventListener("DOMContentLoaded", function () {
+            let adElements = document.querySelectorAll(".adsbygoogle");
+    
+            let observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+    
+            adElements.forEach(ad => observer.observe(ad));
+        });
     </script>
+    
 </body>
 </html>
