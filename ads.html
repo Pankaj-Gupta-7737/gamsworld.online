@@ -105,7 +105,7 @@ footer {
             <ins class="adsbygoogle responsive-ad"
                 style="display:block;"
                 data-ad-client="ca-pub-2009516390222108"
-                data-ad-slot="9822081941" data-lazy-load="true"></ins>
+                data-ad-slot="9822081941"></ins>
         </div>
 
         <ins class="adsbygoogle"
@@ -129,7 +129,9 @@ footer {
 
     <script>
         window.onload = function () {
-            (adsbygoogle = window.adsbygoogle || []).push({});
+            document.querySelectorAll('.adsbygoogle').forEach(function (ad) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            });
         };
     </script>
 </body>

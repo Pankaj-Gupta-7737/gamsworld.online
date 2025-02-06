@@ -204,15 +204,10 @@
                 data-ad-client="ca-pub-2009516390222108" data-ad-slot="3189763983"></ins>
         </div>
     </footer>
-
-       <script>
+    <script>
         window.onload = function () {
-            // Ensure ads are only pushed once
-            document.querySelectorAll('.adsbygoogle').forEach(function(ad) {
-                if (!ad.hasAttribute('data-pushed')) {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    ad.setAttribute('data-pushed', 'true');  // Mark ad as pushed
-                }
+            document.querySelectorAll('.adsbygoogle').forEach(function (ad) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
             });
         };
     </script>
