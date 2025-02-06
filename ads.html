@@ -129,7 +129,9 @@ footer {
 
     <script>
         window.onload = function () {
-            (adsbygoogle = window.adsbygoogle || []).push({});
+            document.querySelectorAll('.adsbygoogle').forEach(function (ad) {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            });
         };
     </script>
 </body>
