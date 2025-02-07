@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Blog</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2009516390222108"
-        crossorigin="anonymous"></script>
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2009516390222108"
+        crossorigin="anonymous"></script> -->
+        <script>
+            if (!window.adsbygoogle) {
+                var script = document.createElement("script");
+                script.async = true;
+                script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2009516390222108";
+                script.crossOrigin = "anonymous";
+                document.head.appendChild(script);
+            }
+        </script>
     <style>
        body {
     font-family: Arial, sans-serif;
@@ -38,6 +47,11 @@ header {
     max-width: 320px;
     height: auto;
 }
+.adsbygoogle {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+        }
 @media (min-width: 500px) {
     .responsive-ad {
         max-width: 468px;
@@ -130,7 +144,14 @@ footer {
     <script>
         window.onload = function () {
             document.querySelectorAll('.adsbygoogle').forEach(function (ad) {
-                (adsbygoogle = window.adsbygoogle || []).push({});
+                try {
+                    if (!ad.dataset.loaded) { // Ensure ad loads only once
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        ad.dataset.loaded = "true"; // Mark as loaded
+                    }
+                } catch (e) {
+                    console.error("Ad push error: ", e);
+                }
             });
         };
     </script>
